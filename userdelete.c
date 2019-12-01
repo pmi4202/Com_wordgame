@@ -65,12 +65,19 @@ void find_file(struct utmp *utbufp){
 }
 
 void copy(char* f1name, char*f2name, int del_num){
-	int i=0, n_chars;
-	char buf[BUFFERSIZE];
+	int i=0, n_chars, file_size;
+	char *buf;
+	buf=(char*)malloc(BUFFERSIZE*sizeof(char));
 	FILE*f1, *f2;
+
 	f1=fopen(f1name, "r");
 	f2=fopen(f2name, "w");
-	
+	if(del_num==-1){
+		fscanf(f1,"%d", &file_size);
+		file_size-=2;
+		sprintf(buf, "%d", file_size);
+		fputs(buf,f2);
+	}
 	while(fgets(buf, BUFFERSIZE,f1)){
 		if(i==(del_num*2-1)){//1 3 5...
 			fgets(buf, BUFFERSIZE,f1);//mean
