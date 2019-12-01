@@ -2,6 +2,7 @@
 //#include	<curses.h>
 void loginPage();
 void mainPage();
+void personalPage();
 void personal_study();
 
 int main(){
@@ -32,10 +33,9 @@ void loginPage(){
         /* search the id & pw */
 
         /* if user has no account */
-        printf("찾으시는 계정이 없습니다. 회원가입을 하시겠습니까? (y/n)\n");
+        printf("해당 계정이 없습니다. 회원가입을 하시겠습니까? (y/n)\n");
+	scanf("%c", &regist);
 	do{        
-		scanf("%c", &regist);
-
 		if(regist == 'y' || regist == 'Y'){
 		        /* register new account */
 		}
@@ -44,6 +44,7 @@ void loginPage(){
 		}
 		else
 		        printf("y/n 로 입력하세요\n");
+		scanf("%c", &regist);
 	} while( (regist != 'y') && (regist != 'Y') && (regist != 'n') && (regist != 'N'));
 
 }
@@ -55,7 +56,8 @@ void mainPage(){
         printf("* 원하는 기능의 번호를 입력하세요.\n
                 \t1. 랭킹 확인\n
                 \t2. 랭킹 도전\n
-                \t3. 개인 학습\n");
+                \t3. 개인 학습\n
+		\t4. 프로그램 종료\n");
         scanf("%d", &command);
 	
 	switch(command){
@@ -64,18 +66,19 @@ void mainPage(){
 		case 2:
 			break;
 		case 3:
-			personal_study();
+			personalPage();
 	}
 }
 
-void personal_study(){
+void personalPage(){
         int command;
 
 	printf("******************* PERSONAL STUDY *********************\n\n");
         printf("* 원하는 기능의 번호를 입력하세요.\n
                 \t1. 단어 추가\n
                 \t2. 단어 삭제\n
-                \t3. 학습하기\n");
+                \t3. 학습하기\n
+		\t4. 메인 화면으로 나가기\n");
         scanf("%d", &command);
 
 	switch(command){
@@ -85,6 +88,10 @@ void personal_study(){
 			break;
 		case 3:
 			personal_study();
+			break;
 	}
+}
+
+void personal_study(){
 
 }
