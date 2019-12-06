@@ -1,0 +1,15 @@
+메모리 크기 재할당을 할 때 사용되는 함수
+1. realloc     2. malloc     3. calloc
+1
+last in first out 자료형
+1. stack     2. queue     3. tree
+1
+tree에서 degree가 0인 노드의 명칭
+1. null     2. leaf node     3. root
+2
+inorder traversal에 대한 설명으로 적절한 것은?
+1. left->visit->right     2. visit->left->right     3. left->right->visit
+1
+정렬방식 중 최소값을 찾아서 배열 앞에서부터 차례대로 정렬하는 방식은?
+1. quick sort     2. merge sort     3.selection sort
+3
