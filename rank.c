@@ -49,7 +49,7 @@ int fd;
  if( pid == 0 ){
   close(0);
   fd =fopen("rank1.txt", "r" );
-  execlp("sort", "sort", NULL);
+  execlp("sort", "sort","-r", NULL);
   perror("execlp");
   exit(1);
  }
@@ -70,7 +70,7 @@ int fd;
  if( pid == 0 ){
   close(0);
   fd =fopen("rank2.txt", "r" );
-  execlp("sort", "sort", NULL);
+  execlp("sort", "sort","-r", NULL);
   perror("execlp");
   exit(1);
  }
@@ -92,7 +92,7 @@ int fd;
  if( pid == 0 ){
   close(0);   
   fd =fopen("rank3.txt", "r" );
-  execlp("sort", "sort", NULL);
+  execlp("sort", "sort","-r", NULL);
   perror("execlp");
   exit(1);
  }
@@ -113,7 +113,7 @@ int fd;
  if( pid == 0 ){
   close(0);   
   fd =fopen("rank4.txt", "r" );
-  execlp("sort", "sort", NULL);
+  execlp("sort", "sort","-r", NULL);
   perror("execlp");
   exit(1);
  }
