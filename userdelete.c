@@ -10,6 +10,14 @@
 //copy
 #define BUFFERSIZE 4096
 
+/*
+<quiz file structure>
+2(word count)
+word1
+mean1
+word2
+mean2
+*/
 void find_file();
 void copy();
 
@@ -43,16 +51,17 @@ void find_file(struct utmp *utbufp){
 	else{
 		while((direntp=readdir(dir_ptr))!=NULL){
 			if(strcmp(direntp->d_name,utbufp->ut_name)==0){
-				//input=delete word number
+				//user file open
 				userfile=fopen(utbufp->ut_name, "r");
 				fscanf(userfile, "%d", &file_size);
 				fclose(userfile);
-
+				
+				//input=delete word number
 				printf("delete word number = ");
 				scanf("%d", &del_num);
-				if(file_size>=del_num*2){
-					copy(utbufp->ut_name, "copy_f", del_num);
-					copy("copy_f", utbufp->ut_name, -1);
+				if(file_size>=del_num*2){//if del_num is in range
+					copy(utbufp->ut_name, "copy_f", del_num);//word delete
+					copy("copy_f", utbufp->ut_name, -1);//word count decrease
 				}
 				else
 					printf("not exist\n");
@@ -72,13 +81,13 @@ void copy(char* f1name, char*f2name, int del_num){
 
 	f1=fopen(f1name, "r");
 	f2=fopen(f2name, "w");
-	if(del_num==-1){
+	if(del_num==-1){//word count decrease
 		fscanf(f1,"%d", &file_size);
 		file_size-=2;
 		sprintf(buf, "%d", file_size);
 		fputs(buf,f2);
 	}
-	while(fgets(buf, BUFFERSIZE,f1)){
+	while(fgets(buf, BUFFERSIZE,f1)){//word delete
 		if(i==(del_num*2-1)){//1 3 5...
 			fgets(buf, BUFFERSIZE,f1);//mean
 			i+=2;
