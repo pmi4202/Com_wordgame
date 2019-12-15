@@ -19,8 +19,8 @@ int main()
 void updateRank(int user_id, int user_score, char *user_nick, char *filename)
 {
 	int id, score, updated = 0;
-	int fd = 0, count = 0;
-	char nickname[BUFSIZ], temp[BUFSIZ], BUF[BUFSIZ];
+	int fd = 0;
+	char nickname[BUFSIZ];
 	FILE *userfile, *tempfile = fopen("temp.txt", "w");
 
 	fd = open(filename, O_CREAT, 0644);
@@ -30,7 +30,6 @@ void updateRank(int user_id, int user_score, char *user_nick, char *filename)
 	while(!feof(userfile))
 	{
 		fscanf(userfile, "%d %d %s ", &score, &id, nickname);
-		printf("%d\n", count++);
 
 		/* update when id is the same, new score is higher than original score */
 		if( id == user_id )
