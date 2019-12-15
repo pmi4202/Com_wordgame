@@ -39,7 +39,7 @@ void game_search(char* filename){
 	}
 	
 }
-
+//all quiz print check
 int game_done(int* ok){
 	int i;
 	for(i=0;i<5;i++){
