@@ -53,6 +53,7 @@ struct word getWord(){
  scanf("%s", input);
  getchar();
  tmp = (char*)malloc(strlen(input)+1);
+ strcpy(tmp, input);
  wo.word = tmp;
  
 //단어 뜻
@@ -60,6 +61,7 @@ struct word getWord(){
  scanf("%s", input);
  getchar();
  tmp = (char*)malloc(strlen(input)+1);
+ strcpy(tmp, input);
  wo.word_mean = tmp;
  
  return wo;
