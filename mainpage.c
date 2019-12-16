@@ -1,9 +1,7 @@
 #include        <stdio.h>
-//#include	<curses.h>
 void loginPage();
 void mainPage();
 void personalPage();
-void personal_study();
 
 int main(){
 
@@ -11,7 +9,6 @@ int main(){
         int     command;
         char    regist;
 
-	/* curse로 해볼까 생각 중인데 일단은 일반 화면으로 썼어요.. */
 	loginPage();
 	mainPage();
         
@@ -20,10 +17,8 @@ int main(){
 
 void loginPage(){
         int user_id, user_pw;
-        /*      curse
-        initscr();
-        clear();
-        */
+        char    regist;
+
         printf("********************* LOG-IN PAGE ***********************\n\n");
         printf("\tID : ");
         scanf("%d", &user_id);
@@ -52,12 +47,8 @@ void loginPage(){
 void mainPage(){
         int command;
 
-        printf("********************** MAIN PAGE ***********************\n\n");//59
-        printf("* 원하는 기능의 번호를 입력하세요.\n
-                \t1. 랭킹 확인\n
-                \t2. 랭킹 도전\n
-                \t3. 개인 학습\n
-		\t4. 프로그램 종료\n");
+        printf("********************** MAIN PAGE ***********************\n\n");
+        printf("* 원하는 기능의 번호를 입력하세요.\n\t1. 랭킹 확인\n\t2. 랭킹 도전\n\t3. 개인 학습\n\t4. 프로그램 종료\n");
         scanf("%d", &command);
 	
 	switch(command){
@@ -74,11 +65,7 @@ void personalPage(){
         int command;
 
 	printf("******************* PERSONAL STUDY *********************\n\n");
-        printf("* 원하는 기능의 번호를 입력하세요.\n
-                \t1. 단어 추가\n
-                \t2. 단어 삭제\n
-                \t3. 학습하기\n
-		\t4. 메인 화면으로 나가기\n");
+        printf("* 원하는 기능의 번호를 입력하세요.\n\t1. 단어 추가\n/t2. 단어 삭제\n\t3. 학습하기\n\t4. 메인 화면으로 나가기\n");
         scanf("%d", &command);
 
 	switch(command){
@@ -87,11 +74,7 @@ void personalPage(){
 		case 2:
 			break;
 		case 3:
-			personal_study();
+			//personal_study();
 			break;
 	}
-}
-
-void personal_study(){
-
 }
