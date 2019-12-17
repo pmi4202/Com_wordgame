@@ -116,8 +116,7 @@ void rankchallenge(){
    int command;
    
    //랭킹 점수 생성에 필요한 변수
-   int user_id = 13920, user_score = 3;
-   char user_nick[BUFSIZ] = "시프시프";
+   int user_score = 0;
    char filename[BUFSIZ] = "rank1.txt";
    char filename2[BUFSIZ] = "rank2.txt";
    char filename3[BUFSIZ] = "rank3.txt";
