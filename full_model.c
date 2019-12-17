@@ -6,6 +6,9 @@
 #include <string.h>
 #include <signal.h>
 #include <termios.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 //directory
 #include <dirent.h>
 #include <sys/types.h>
@@ -19,7 +22,13 @@ struct word {
  char *word_mean;
 };
 
-void loginPage(); // 로그인 페이지
+typedef struct User
+{
+	int user_id, user_pw;
+        char user_nick[20];
+}User;
+
+User loginPage(); // 로그인 페이지
 void mainPage(); // 메인 페이지
 void personalPage(); //개인학습 페이지
 void rankchallenge(); //랭킹 도전 페이지
@@ -36,28 +45,30 @@ void file_open(); // 개인학습 학습장
 void game_search(); // 랭킹 도전 게임
 int game_done(); // 랭킹 도전 게임
 
-//void updateRank(int user_id, int user_score, char *user_nick, char *filename); //랭킹점수파일생성
+void updateRank(); //랭킹점수파일생성
 
 void quiz_release();//랭킹 도전 문제 출제부분
 void time_out(); //랭킹 도전 문제 출제부분
-int correct = 0; //랭킹 도전 문제 출제부분
 int skip = 0;//랭킹 도전 문제 출제부분
+int correct;
+User nowUser;
 
 int main(){
-   loginPage();
+   nowUser = loginPage();
    mainPage();
         return 0;
 }
 
-void loginPage(){
-        int user_id, user_pw;
+User loginPage(){
         char    regist;
 
         printf("********************* LOG-IN PAGE ***********************\n\n");
-        printf("\tID : ");
-        scanf("%d", &user_id);
+        printf("\tNickName : ");
+        scanf("%s", nowUser.user_nick);
         printf("\tPassWord : ");
-        scanf("%d", &user_pw);
+        scanf("%d", &(nowUser.user_pw));
+        srand(time(NULL));
+	nowUser.user_id = rand()%10000;
         
         /* search the id & pw */
 
@@ -76,6 +87,7 @@ void loginPage(){
       scanf("%c", &regist);
    } while( (regist != 'y') && (regist != 'Y') && (regist != 'n') && (regist != 'N'));
 
+	return nowUser;
 }
 
 //메인 페이지
@@ -118,7 +130,7 @@ void rankchallenge(){
    switch(command){
       case 1:
          game_search("data_structure");
-         //updateRank(user_id, user_score, user_nick, filename);
+         updateRank(filename, nowUser, user_score);
          rankchallenge();
       case 2:
          game_search("data_structure"); // 문제 출제 후 수정
@@ -140,7 +152,7 @@ void rankchallenge(){
 }
 
 void personalPage(){
-        int command;
+        int command, fd;
    FILE *fp;
     char in;
    struct word getword;
@@ -150,7 +162,8 @@ void personalPage(){
 
    switch(command){
       case 1:
-          fp = fopen("indivi.txt", "w"); //쓰기
+        fd = open(nowUser.user_nick, O_CREAT, 0644);
+	fp = fdopen(fd, "w"); //사용자 닉네임으로 파일 열고 (없으면 만들어서) 쓰기
            while(1) 
               {
                getword = getWord();
@@ -165,7 +178,7 @@ void personalPage(){
          break;
       case 3:
          printf("\n내 학습장 \n\n");
-         file_open();
+         file_open(nowUser.user_nick);
          sleep(3);
          personalPage();
       case 4:
@@ -319,10 +332,10 @@ return wo;
 }
 
 //내 학습장 출력하기..
-void file_open()
+void file_open(char *filename)
 {
  int pid;
- File* fd;
+ int fd;
 
  if( (pid = fork() ) == -1 ){
   perror("fork");
@@ -331,7 +344,7 @@ void file_open()
 
  if( pid == 0 ){
   close(0);   /* close */
-  fd = fopen("indivi.txt", "r"); 
+  fd = open(filename, O_CREAT);
   execlp("cat", "cat", NULL); 
   perror("execlp");
   exit(1);
@@ -359,12 +372,13 @@ void game_search(char* filename){
       ok[i]=0;//init for random (quiz done or yet)
 
    //random print
-   while(game_done(오케이)){
+   while(game_done(ok)){
       quiznum=rand()%5;//0~4
       if(ok[quiznum]==0){
          ok[quiznum]=1;
          // 문장 읽어올 때 마다 실행
-         quiz_release(nowquiz[quiznum*3]);
+	skip = 0;
+quiz_release(nowquiz[quiznum*3]);
          user_score += correct;
       }
    }
@@ -411,17 +425,48 @@ void quiz_release(char *nowquiz)
          printf("Wrong! The anwser is %s!\n", nowquiz+(2*BUFSIZ));
       }
    }
-   printf("Go to next question in 3 sec ...\n");
+   printf("Go to next question in 3 sec ...\n\n");
    sleep(3);
-   return;
 }
 
 
 //랭킹 도전 QUIZ!!!! 부분
 void time_out()
 {
-   printf("\n\tTime out!\npress any keyboards\n");
+   printf("\n\tTime out! press any keyboards\n");
    skip++;
    correct = 0;
    return;
+}
+
+/* rank file form ==> score id nickname */
+void updateRank(char *filename, User nowUser, int user_score)
+{
+	int id, score, updated = 0;
+	int fd = 0;
+	char nickname[BUFSIZ];
+	FILE *userfile, *tempfile = fopen("temp.txt", "w");
+
+	fd = open(filename, O_CREAT, 0644);
+	userfile = fdopen(fd, "r");
+
+	/* copy line before now_user score. Edit now_user score. copy the remaining lines */
+	while(!feof(userfile))
+	{
+		fscanf(userfile, "%d %d %s ", &score, &id, nickname);
+
+		/* update when id is the same, new score is higher than original score */
+		if( id == nowUser.user_id )
+		{
+			updated = 1;
+			if( score < user_score )
+				score = user_score;
+		}
+		fprintf(tempfile, "%d %d %s\n", score, nowUser.user_id, nowUser.user_nick);
+	}
+	if(!updated)
+		fprintf(tempfile, "%d %d %s", user_score, nowUser.user_id, nowUser.user_nick);
+
+	unlink(filename);
+	rename("temp.txt", filename);
 }
