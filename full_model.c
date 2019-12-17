@@ -38,7 +38,7 @@ int game_done(); // 랭킹 도전 게임
 
 //void updateRank(int user_id, int user_score, char *user_nick, char *filename); //랭킹점수파일생성
 
-void quiz_release(char *nowquiz);//랭킹 도전 문제 출제부분
+void quiz_release();//랭킹 도전 문제 출제부분
 void time_out(); //랭킹 도전 문제 출제부분
 int correct = 0; //랭킹 도전 문제 출제부분
 int skip = 0;//랭킹 도전 문제 출제부분
@@ -322,7 +322,7 @@ return wo;
 void file_open()
 {
  int pid;
- int fd;
+ File* fd;
 
  if( (pid = fork() ) == -1 ){
   perror("fork");
@@ -357,22 +357,19 @@ void game_search(char* filename){
    while(fgets(nowquiz[i++], BUFSIZ, classfile));
    for(i=0;i<5;i++)
       ok[i]=0;//init for random (quiz done or yet)
-   // 문장 읽어올 때 마다 실행
-   quiz_release(nowquiz[quiznum*3]);
-   user_score += correct;
 
-   // 반복 끝나면
-   printf("The test is finished. Your Score is ... %d\n", user_score);
    //random print
    while(game_done(오케이)){
       quiznum=rand()%5;//0~4
       if(ok[quiznum]==0){
          ok[quiznum]=1;
-         printf("%s\n", nowquiz[quiznum*3]);
-         printf("%s\n", nowquiz[quiznum*3+1]);
+         // 문장 읽어올 때 마다 실행
+         quiz_release(nowquiz[quiznum*3]);
+         user_score += correct;
       }
    }
-   
+   // 반복 끝나면
+   printf("The test is finished. Your Score is ... %d\n", user_score);
 }
 
 /*-------------game file search, random print------------랭킹 도전 하기!!!*/
@@ -389,19 +386,19 @@ int game_done(int* ok){
 void quiz_release(char *nowquiz)
 {
    char user_answ;
-   char c;
+   char* temp=nowquiz+(2*BUFSIZ);
 
    printf("%s\n", nowquiz);
    printf("%s\n      => ", nowquiz+(1*BUFSIZ));
    
    signal(SIGALRM, time_out);
    alarm(10);
-
-   c = getc(stdin);
+   getc(stdin); //enterkey del
+   user_answ = getc(stdin);
 
    if(!skip)
    {
-      if( !strcmp(&c, nowquiz+(2*BUFSIZ)) )
+      if( user_answ==temp[0])
       {
          correct = 1;
          alarm(0);
