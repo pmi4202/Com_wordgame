@@ -1,0 +1,15 @@
+무선 랜에서 데이터 통신을 위해 사용하는 방식은?
+1. CSMA/CD        2. CSMA/CA         3.ALOHA
+2
+MAC Frame Fomat에 Data andpadding 에서 maximum length가 존재하는 이유가 아닌것?
+1.버퍼 사이즈.      2.미디어 독점 방지.       3.충돌 방지
+3
+Ethernet에서 데이터 통신을 위해 사용하는 방식은?
+1. CSMA/CA        2. CSMA/CD         3.ALOHA
+2
+ARQ(automatic Repeat Requets)의 방법이 아닌 것은?
+1.Go-Back-N           2.Selective-reject ARQ     3.Normal Response Mode
+3
+HDLC Frame에서 Flag와 구분하기 위해 비트를 추가하는 방식은?
+1.bit stuffing       2. pulse stuffing      3. ATM
+1
