@@ -134,12 +134,12 @@ void rankchallenge(){
          updateRank(filename, nowUser, user_score);
          rankchallenge();
       case 2:
-         game_search("Operation system"); // 문제 출제 후 수정
+         game_search("operating_system"); // 문제 출제 후 수정
          updateRank(filename, nowUser, user_score);
          rankchallenge();
          break;
       case 3:
-         game_search("data");   // 문제 출제 후 수정
+         game_search("data_communication");   // 문제 출제 후 수정
          updateRank(filename, nowUser, user_score);
          rankchallenge();
          break;
