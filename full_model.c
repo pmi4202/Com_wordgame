@@ -163,8 +163,8 @@ void personalPage(){
 
    switch(command){
       case 1:
-        fd = open(nowUser.user_nick, O_CREAT, 0644);
-	fp = fdopen(fd, "w"); //사용자 닉네임으로 파일 열고 (없으면 만들어서) 쓰기
+        //fd = open(nowUser.user_nick, O_CREAT, 0644);
+	//fp = fdopen(fd, "w"); //사용자 닉네임으로 파일 열고 (없으면 만들어서) 쓰기
            while(1) 
               {
                getword = getWord();
