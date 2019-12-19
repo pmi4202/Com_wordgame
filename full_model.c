@@ -134,18 +134,18 @@ void rankchallenge(){
          updateRank(filename, nowUser, user_score);
          rankchallenge();
       case 2:
-         game_search("data_structure"); // 문제 출제 후 수정
-         //updateRank(user_id, user_score, user_nick, filename2);
+         game_search("Operation system"); // 문제 출제 후 수정
+         updateRank(filename, nowUser, user_score);
          rankchallenge();
          break;
       case 3:
-         game_search("data_structure");   // 문제 출제 후 수정
-         //updateRank(user_id, user_score, user_nick, filename3);
+         game_search("data");   // 문제 출제 후 수정
+         updateRank(filename, nowUser, user_score);
          rankchallenge();
          break;
       case 4: 
-         game_search("data_structure"); // 문제 출제 후 수정
-         //updateRank(user_id, user_score, user_nick, filename4);
+         game_search("java"); // 문제 출제 후 수정
+         updateRank(filename, nowUser, user_score);
          rankchallenge();
          break;
       case 5: mainPage();
